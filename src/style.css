@@ -1870,3 +1870,125 @@ SIGNUP PAGE
     }
 
 }
+
+
+
+
+/* Cart Icon */
+
+.cart-link {
+    position: relative;
+    text-decoration: none;
+}
+
+
+#cart-count {
+    background: #d2694c;
+    color: white;
+    font-size: 12px;
+
+    width: 20px;
+    height: 20px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    position: absolute;
+    top: -10px;
+    right: -12px;
+}
+
+
+/* Cart Page */
+
+.cart-section {
+    padding: 40px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+
+.cart-section h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+#cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.cart-product {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #fff8f2;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+}
+
+
+.cart-product img {
+
+    width: 100px;
+    height: 100px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+}
+
+
+.cart-product button {
+
+    background: #d2694c;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 15px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+}
+
+
+.cart-summary {
+
+    margin-top: 30px;
+
+    text-align: center;
+
+}
+
+
+#checkout-btn {
+
+    background: #8b4513;
+
+    color: white;
+
+    border: none;
+
+    padding: 12px 25px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+}
