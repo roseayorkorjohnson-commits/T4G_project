@@ -48,11 +48,15 @@ body{
 }
 
 .order-btn{
+    display: flex;
     background:#d63384;
     color:#fff;
     text-decoration:none;
     padding:12px 25px;
     border-radius:30px;
+}  
+.order-btn a:hover{
+    color: #8f3964;
 }
 
 /* Hero Section */
@@ -91,6 +95,19 @@ body{
 .btn-outline{
     border:2px solid #d63384;
     color:#d63384;
+}
+
+.btn:hover {
+    background: #b9426d; /* slightly darker shade */
+    color: white;
+    transform: scale(1.05); /* subtle zoom effect */
+    transition: all 0.3s ease; /* smooth transition */
+}
+
+.btn-outline:hover {
+    background: #461024; /* fill with your accent color */
+    color: white;
+    transition: all 0.3s ease;
 }
 
 .hero{
@@ -495,10 +512,10 @@ footer {
 /* Product Grid */
 .products{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 250px));
+    justify-content: center;
     gap: 30px;
 }
-
 /* Product Cards */
 .card{
     background: #fff;
@@ -508,7 +525,11 @@ footer {
     transition: 0.3s;
     text-align: center;
 }
-
+ .card{
+    width: 250px;
+    max-width: 250px;
+    margin: 0 auto;
+}
 .card:hover{
     transform: translateY(-8px);
 }
@@ -548,17 +569,24 @@ footer {
 /* Hidden Product Cards & Animation */
 .hidden-products {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 250px));
+    justify-content: center;
     gap: 30px;
-    margin-top: 30px;
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.6s ease;
+    margin-top: 0;          /* Changed */
+    transition: max-height 0.6s ease, margin-top 0.6s ease;
+}
+
+.hidden-products.open {
+    max-height: 3000px;
+    margin-top: 30px;       /* Only when open */
 }
 
 .hidden-products.open {
     max-height: 3000px;
     margin-top: 30px;
+    /* only when open */
 }
 
 .hidden-products.open .hidden-product {
@@ -569,9 +597,18 @@ footer {
 .hidden-product {
     opacity: 0;
     transform: translateY(-20px);
-    transition: opacity 0.4s ease 0.1s, transform 0.4s ease 0.1s;
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+.hidden-products.open .hidden-product {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hidden-products.open .hidden-product:hover {
+    transform: translateY(-8px);
+}
+ 
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -617,7 +654,7 @@ footer {
     filter: brightness(0.95);
     box-shadow: 0 14px 30px rgba(194, 24, 91, 0.24);
 }
-
+  
 .view-more-btn:active {
     transform: translateY(0);
 }
