@@ -20,7 +20,11 @@
 
         <div class="logo">Whisks & Bloom</div>
 
-        <ul class="nav-links">
+        <button class="hamburger" id="hamburger">
+                     ☰
+         </button>
+
+        <ul class="nav-links" id="nav-links">
             <li><a href="../index.html">Home</a></li>
             <li><a href="shop.html">Shop</a></li>
             <li><a href="custom.html">Custom Orders</a></li>
@@ -30,6 +34,7 @@
             <li><a href="signup.html">Signup</a></li>
 
         </ul>
+            
 
         <a href="shop.html" class="order-btn">Order Now</a>
 
@@ -203,63 +208,9 @@
         <p>&copy; 2026 Whisk & Bloom Bakery. All Rights Reserved.</p>
 
     </footer>
+        
+     <script src="../src/project.js"></script>
 
-
-    <script>
-        const uploadZone = document.getElementById('uploadZone');
-        const orderImageInput = document.getElementById('orderImageInput');
-        const uploadPreview = document.getElementById('uploadPreview');
-        const previewThumb = document.getElementById('previewThumb');
-        const previewName = document.getElementById('previewName');
-        const removeImageBtn = document.getElementById('removeImageBtn');
-
-        function updatePreview(file) {
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = () => {
-                previewThumb.style.backgroundImage = `url(${reader.result})`;
-                previewName.textContent = file.name;
-                uploadPreview.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        uploadZone.addEventListener('click', () => orderImageInput.click());
-
-        uploadZone.addEventListener('dragover', (event) => {
-            event.preventDefault();
-            uploadZone.classList.add('upload-hover');
-        });
-
-        ['dragleave', 'drop'].forEach((eventName) => {
-            uploadZone.addEventListener(eventName, (event) => {
-                event.preventDefault();
-                uploadZone.classList.remove('upload-hover');
-            });
-        });
-
-        uploadZone.addEventListener('drop', (event) => {
-            const file = event.dataTransfer.files[0];
-            if (file) {
-                orderImageInput.files = event.dataTransfer.files;
-                updatePreview(file);
-            }
-        });
-
-        orderImageInput.addEventListener('change', () => {
-            const file = orderImageInput.files[0];
-            if (file) {
-                updatePreview(file);
-            }
-        });
-
-        removeImageBtn.addEventListener('click', () => {
-            orderImageInput.value = '';
-            uploadPreview.classList.add('hidden');
-            previewThumb.style.backgroundImage = '';
-            previewName.textContent = '';
-        });
-    </script>
 
 
 

@@ -16,8 +16,12 @@
 <nav class="navbar">
 
     <div class="logo">Whisk & Bloom</div>
+
+    <button class="hamburger" id="hamburger">
+                     ☰
+         </button>
       
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-links">
             <li><a href="../index.html">Home</a></li>
             <li><a href="shop.html">Shop</a></li>
             <li><a href="custom.html">Custom Orders</a></li>
@@ -25,10 +29,10 @@
             <li><a href="contact.html">Contact</a></li>
             <li><a href="login.html">Login</a></li>
             <li><a href="signup.html">Signup</a></li>
-            <li><a href="cart.html">Cart</a></li>
-
+            
         </ul>
-
+            
+         
     <a href="shop.html" class="order-btn">Order Now</a>
 
 </nav>
@@ -69,13 +73,9 @@
         <h3>Chocolate Cake</h3>
 
         <p>GHS 120</p>
-        <button 
-        class="add-cart"
-        data-name="Chocolate Cake"
-        data-price="120"
-        data-image="images/cake.jpg">
-         Add to Cart
-        </button>
+
+        <button>Add to Cart</button>
+
         </div>
 
 
@@ -339,118 +339,8 @@
     <p>&copy; 2026 Whisk & Bloom Bakery. All Rights Reserved.</p>
 
 </footer>
-
-
-
-
-<script>
-    const searchInput = document.getElementById('searchInput');
-    const categoryBtns = document.querySelectorAll('.category-btn');
-    const productsGrid = document.querySelector('.products');
-    const hiddenWrapper = document.querySelector('.hidden-products');
-    const viewMoreBtn = document.querySelector('.view-more-btn');
-    const noResultsEl = document.querySelector('.no-results');
-
-    const allCards = Array.from(document.querySelectorAll('.products .card')).concat(Array.from(document.querySelectorAll('.hidden-products .card')));
-
-    function getCardName(card){
-        return (card.dataset.name || (card.querySelector('h3') && card.querySelector('h3').textContent) || '').toLowerCase();
-    }
-
-    function getCardCategory(card){
-        return (card.dataset.category || '').toLowerCase();
-    }
-
-    function updateNoResults(show){
-        if(!noResultsEl) return;
-        noResultsEl.style.display = show ? 'block' : 'none';
-    }
-
-    function filterProducts(){
-        const query = (searchInput && searchInput.value || '').trim().toLowerCase();
-        const activeCatBtn = document.querySelector('.category-btn.active');
-        const activeCat = activeCatBtn ? activeCatBtn.dataset.category : 'all';
-
-        let anyVisible = false;
-        let anyHiddenVisible = false;
-
-        allCards.forEach(card => {
-            const name = getCardName(card);
-            const category = getCardCategory(card);
-            const matchesCat = activeCat === 'all' || category === activeCat;
-            const matchesSearch = !query || name.includes(query) || category.includes(query);
-            const shouldShow = matchesCat && matchesSearch;
-
-            if(shouldShow){
-                card.classList.remove('filtered-out');
-                anyVisible = true;
-                if(card.closest('.hidden-products')){
-                    anyHiddenVisible = true;
-                    card.classList.add('visible');
-                }
-            } else {
-                card.classList.add('filtered-out');
-                if(card.closest('.hidden-products')){
-                    card.classList.remove('visible');
-                }
-            }
-        });
-
-        // open/close hidden wrapper based on matches
-        if(anyHiddenVisible){
-            hiddenWrapper.classList.add('open');
-        } else {
-            hiddenWrapper.classList.remove('open');
-        }
-
-        // update button text
-        if(viewMoreBtn){
-            viewMoreBtn.textContent = hiddenWrapper.classList.contains('open') ? 'Show Less' : 'View More Products';
-        }
-
-        // show no results
-        const visibleCount = allCards.filter(c => !c.classList.contains('filtered-out')).length;
-        updateNoResults(visibleCount === 0);
-    }
-
-    // category button handlers
-    categoryBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            categoryBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            filterProducts();
-        });
-    });
-
-    // search input
-    if(searchInput){
-        searchInput.addEventListener('input', () => {
-            filterProducts();
-        });
-    }
-
-    // view more explicit toggle
-    if(viewMoreBtn){
-        viewMoreBtn.addEventListener('click', () => {
-            const isOpen = hiddenWrapper.classList.toggle('open');
-            if(isOpen){
-                // show hidden matches with stagger
-                document.querySelectorAll('.hidden-products .card').forEach((card, idx) => {
-                    if(!card.classList.contains('filtered-out')){
-                        setTimeout(() => card.classList.add('visible'), idx * 80);
-                    }
-                });
-                viewMoreBtn.textContent = 'Show Less';
-            } else {
-                document.querySelectorAll('.hidden-products .card').forEach(card => card.classList.remove('visible'));
-                viewMoreBtn.textContent = 'View More Products';
-            }
-        });
-    }        
-              document.querySelector(".shop-controls button").addEventListener("click", filterProducts);
-    // initial filter to respect category/search defaults
-    filterProducts();
-</script>
+     
+    <script src="../src/project.js"></script>
 
 </body>
 </html>
