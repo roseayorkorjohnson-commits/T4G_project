@@ -441,7 +441,7 @@ footer {
 
 /* Shop Banner */
 .shop-banner {
-    background-image: url('../images/IMG-20260708-WA0483.jpg'); /* path to your image */
+    background-image: url('../images/snip.jpeg'); /* path to your image */
     background-size: cover;       /* makes image fill the section */
     background-position: center;  /* centers the image */
     background-repeat: no-repeat; /* stops tiling */
@@ -458,7 +458,7 @@ footer {
 }
 
 .shop-banner p{
-    color: #1b1b1b;
+    color: #191819;
     font-size: 1.1rem;
 }
 
@@ -701,13 +701,14 @@ footer {
 /* About Banner */
 .about-banner {
     position: relative;
-    background-image: url(../images/store.jpeg);
+    background-image: url(../images/am.jpeg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     text-align: center;
     padding: 80px 20px;
     overflow: hidden;
+    filter: brightness(1.4);
 }
 
 .about-banner::before {
@@ -772,7 +773,7 @@ CUSTOM ORDER PAGE
 /* Custom Banner */
 
 .custom-banner{
-background-image: url('../images/32.jpeg'); /* path to your image */
+background-image: url('../images/custimage.jpeg'); /* path to your image */
     background-size: cover;       /* makes image fill the section */
     background-position: center;  /* centers the image */
     background-repeat: no-repeat; /* stops tiling */
