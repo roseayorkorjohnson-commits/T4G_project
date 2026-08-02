@@ -2114,6 +2114,8 @@ SIGNUP PAGE
     color: #1a7f4b;
 }
 
+
+
 @media(max-width: 900px) {
     .cart-wrapper {
         grid-template-columns: 1fr;
@@ -2129,6 +2131,7 @@ SIGNUP PAGE
     }
 }
 
+
 @media(max-width: 680px) {
     .cart-item-card {
         gap: 14px;
@@ -2137,5 +2140,25 @@ SIGNUP PAGE
     .cart {
         width: 95%;
         margin: 40px auto 80px;
+    }
+
+    .cart-item-card img {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    .cart-item-card h3 {
+        font-size: 18px;
+    }
+
+    .quantity-controls {
+        justify-content: center;
+    }
+
+    .cart-summary {
+        width: 100%;
     }
 }
