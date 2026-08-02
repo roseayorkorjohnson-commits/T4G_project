@@ -198,11 +198,6 @@ function getCartItemId(product) {
 
 function updateCartCount() {
 
-    const cartLink =
-        document.getElementById("cartLink");
-
-    if (!cartLink) return;
-
     const cart = loadCart();
 
     const count = cart.reduce(
@@ -210,7 +205,11 @@ function updateCartCount() {
         0
     );
 
-    cartLink.textContent = `Cart (${count})`;
+    const cartCount = document.getElementById("cart-count");
+
+    if (cartCount) {
+        cartCount.textContent = count;
+    }
 
 }
 
