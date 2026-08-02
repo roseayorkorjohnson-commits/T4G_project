@@ -1,5 +1,6 @@
-
-// Hamburger icon
+// ===============================
+// HAMBURGER MENU
+// ===============================
 
 const hamburger = document.getElementById("hamburger");
 const navLinks = document.getElementById("nav-links");
@@ -10,176 +11,628 @@ if (hamburger && navLinks) {
     });
 }
 
+// ===============================
+// SHOP SEARCH & VIEW MORE
+// ===============================
 
+const searchInput = document.getElementById("searchInput");
+const categoryBtns = document.querySelectorAll(".category-btn");
+const hiddenWrapper = document.querySelector(".hidden-products");
+const viewMoreBtn = document.querySelector(".view-more-btn");
+const noResultsEl = document.querySelector(".no-results");
 
-//shop script
+const allCards = [
+    ...document.querySelectorAll(".products .card"),
+    ...document.querySelectorAll(".hidden-products .card")
+];
 
+function getCardName(card) {
+    return (
+        card.dataset.name ||
+        card.querySelector("h3").textContent
+    ).toLowerCase();
+}
 
-    const searchInput = document.getElementById('searchInput');
-    const categoryBtns = document.querySelectorAll('.category-btn');
-    const productsGrid = document.querySelector('.products');
-    const hiddenWrapper = document.querySelector('.hidden-products');
-    const viewMoreBtn = document.querySelector('.view-more-btn');
-    const noResultsEl = document.querySelector('.no-results');
+function getCardCategory(card) {
+    return (card.dataset.category || "").toLowerCase();
+}
 
-    const allCards = Array.from(document.querySelectorAll('.products .card')).concat(Array.from(document.querySelectorAll('.hidden-products .card')));
-
-    function getCardName(card){
-        return (card.dataset.name || (card.querySelector('h3') && card.querySelector('h3').textContent) || '').toLowerCase();
+function updateNoResults(show) {
+    if (noResultsEl) {
+        noResultsEl.style.display = show ? "block" : "none";
     }
+}
 
-    function getCardCategory(card){
-        return (card.dataset.category || '').toLowerCase();
-    }
+function filterProducts() {
 
-    function updateNoResults(show){
-        if(!noResultsEl) return;
-        noResultsEl.style.display = show ? 'block' : 'none';
-    }
+    const query = searchInput
+        ? searchInput.value.trim().toLowerCase()
+        : "";
 
-    function filterProducts(){
-        const query = (searchInput && searchInput.value || '').trim().toLowerCase();
-        const activeCatBtn = document.querySelector('.category-btn.active');
-        const activeCat = activeCatBtn ? activeCatBtn.dataset.category : 'all';
+    const activeBtn = document.querySelector(".category-btn.active");
 
-        let anyVisible = false;
-        let anyHiddenVisible = false;
+    const activeCategory = activeBtn
+        ? activeBtn.dataset.category
+        : "all";
 
-        allCards.forEach(card => {
-            const name = getCardName(card);
-            const category = getCardCategory(card);
-            const matchesCat = activeCat === 'all' || category === activeCat;
-            const matchesSearch = !query || name.includes(query) || category.includes(query);
-            const shouldShow = matchesCat && matchesSearch;
+    let hiddenVisible = false;
 
-            if(shouldShow){
-                card.classList.remove('filtered-out');
-                anyVisible = true;
-                if(card.closest('.hidden-products')){
-                    anyHiddenVisible = true;
-                    card.classList.add('visible');
-                }
-            } else {
-                card.classList.add('filtered-out');
-                if(card.closest('.hidden-products')){
-                    card.classList.remove('visible');
-                }
-            }
-        });
+    allCards.forEach(card => {
 
-        // open/close hidden wrapper based on matches
-        if(anyHiddenVisible){
-            hiddenWrapper.classList.add('open');
-        } else {
-            hiddenWrapper.classList.remove('open');
+        const name = getCardName(card);
+        const category = getCardCategory(card);
+
+        const matchesCategory =
+            activeCategory === "all" ||
+            category === activeCategory;
+
+        const matchesSearch =
+            !query ||
+            name.includes(query) ||
+            category.includes(query);
+
+        const show = matchesCategory && matchesSearch;
+
+        card.classList.toggle("filtered-out", !show);
+
+        if (
+            show &&
+            card.closest(".hidden-products")
+        ) {
+            hiddenVisible = true;
+            card.classList.add("visible");
+        } else if (
+            card.closest(".hidden-products")
+        ) {
+            card.classList.remove("visible");
         }
 
-        // update button text
-        if(viewMoreBtn){
-            viewMoreBtn.textContent = hiddenWrapper.classList.contains('open') ? 'Show Less' : 'View More Products';
-        }
-
-        // show no results
-        const visibleCount = allCards.filter(c => !c.classList.contains('filtered-out')).length;
-        updateNoResults(visibleCount === 0);
-    }
-
-    // category button handlers
-    categoryBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            categoryBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            filterProducts();
-        });
     });
 
-    // search input
-    if(searchInput){
-        searchInput.addEventListener('input', () => {
-            filterProducts();
-        });
+    if (hiddenWrapper) {
+        hiddenWrapper.classList.toggle(
+            "open",
+            hiddenVisible
+        );
     }
 
-    // view more explicit toggle
-    if(viewMoreBtn){
-        viewMoreBtn.addEventListener('click', () => {
-            const isOpen = hiddenWrapper.classList.toggle('open');
-            if(isOpen){
-                // show hidden matches with stagger
-                document.querySelectorAll('.hidden-products .card').forEach((card, idx) => {
-                    if(!card.classList.contains('filtered-out')){
-                        setTimeout(() => card.classList.add('visible'), idx * 80);
-                    }
-                });
-                viewMoreBtn.textContent = 'Show Less';
-            } else {
-                document.querySelectorAll('.hidden-products .card').forEach(card => card.classList.remove('visible'));
-                viewMoreBtn.textContent = 'View More Products';
-            }
+    if (viewMoreBtn && hiddenWrapper) {
+        viewMoreBtn.textContent =
+            hiddenWrapper.classList.contains("open")
+                ? "Show Less"
+                : "View More Products";
+    }
+
+    const visibleCards = allCards.filter(
+        card => !card.classList.contains("filtered-out")
+    );
+
+    updateNoResults(visibleCards.length === 0);
+
+}
+
+categoryBtns.forEach(btn => {
+
+    btn.addEventListener("click", () => {
+
+        categoryBtns.forEach(button =>
+            button.classList.remove("active")
+        );
+
+        btn.classList.add("active");
+
+        filterProducts();
+
+    });
+
+});
+
+if (searchInput) {
+    searchInput.addEventListener("input", filterProducts);
+}
+
+if (viewMoreBtn && hiddenWrapper) {
+
+    viewMoreBtn.addEventListener("click", () => {
+
+        hiddenWrapper.classList.toggle("open");
+
+        viewMoreBtn.textContent =
+            hiddenWrapper.classList.contains("open")
+                ? "Show Less"
+                : "View More Products";
+
+    });
+
+}
+
+const searchBtn = document.querySelector(".shop-controls button");
+
+if (searchBtn) {
+    searchBtn.addEventListener("click", filterProducts);
+}
+
+filterProducts();
+
+// ===============================
+// CART STORAGE
+// ===============================
+
+const cartStorageKey = "whiskBloomCart";
+
+function loadCart() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(cartStorageKey)
+        ) || [];
+
+    } catch {
+
+        return [];
+
+    }
+
+}
+
+function saveCart(cart) {
+
+    localStorage.setItem(
+        cartStorageKey,
+        JSON.stringify(cart)
+    );
+
+}
+
+function getCartItemId(product) {
+
+    return (
+        product.id ||
+        product.name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+    );
+
+}
+
+function updateCartCount() {
+
+    const cartLink =
+        document.getElementById("cartLink");
+
+    if (!cartLink) return;
+
+    const cart = loadCart();
+
+    const count = cart.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+    );
+
+    cartLink.textContent = `Cart (${count})`;
+
+}
+
+function addToCart(product) {
+
+    const cart = loadCart();
+
+    const id = getCartItemId(product);
+
+    const existing = cart.find(
+        item => item.id === id
+    );
+
+    if (existing) {
+
+        existing.quantity++;
+
+    } else {
+
+        cart.push({
+            id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: 1
         });
-    }        
-              document.querySelector(".shop-controls button").addEventListener("click", filterProducts);
-    // initial filter to respect category/search defaults
-    filterProducts();
+
+    }
+
+    saveCart(cart);
+
+    updateCartCount();
+
+}
 
 
-//Custom script
 
-const uploadZone = document.getElementById('uploadZone');
-        const orderImageInput = document.getElementById('orderImageInput');
-        const uploadPreview = document.getElementById('uploadPreview');
-        const previewThumb = document.getElementById('previewThumb');
-        const previewName = document.getElementById('previewName');
-        const removeImageBtn = document.getElementById('removeImageBtn');
 
-        function updatePreview(file) {
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = () => {
-                previewThumb.style.backgroundImage = `url(${reader.result})`;
-                previewName.textContent = file.name;
-                uploadPreview.classList.remove('hidden');
+
+
+// ===============================
+// CART FUNCTIONS
+// ===============================
+
+function formatPrice(value) {
+    return `GHS ${value.toFixed(2)}`;
+}
+
+function calculateTotals(cart) {
+    const subtotal = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+    );
+
+    const delivery = subtotal > 0 ? 15 : 0;
+
+    return {
+        subtotal,
+        delivery,
+        total: subtotal + delivery
+    };
+}
+
+function renderCartItems() {
+
+    const cartItemsContainer = document.getElementById("cartItems");
+
+    if (!cartItemsContainer) return;
+
+    const emptyMessage =
+        document.querySelector(".empty-cart-message");
+
+    const clearCartBtn =
+        document.getElementById("clearCart");
+
+    const cart = loadCart();
+
+    const totals = calculateTotals(cart);
+
+    cartItemsContainer.innerHTML = "";
+
+    if (cart.length === 0) {
+
+        if (emptyMessage)
+            emptyMessage.style.display = "block";
+
+        if (clearCartBtn)
+            clearCartBtn.disabled = true;
+
+        document.getElementById("summarySubtotal").textContent = formatPrice(0);
+        document.getElementById("summaryDelivery").textContent = formatPrice(0);
+        document.getElementById("summaryTotal").textContent = formatPrice(0);
+
+        updateCartCount();
+
+        return;
+
+    }
+
+    if (emptyMessage)
+        emptyMessage.style.display = "none";
+
+    if (clearCartBtn)
+        clearCartBtn.disabled = false;
+
+    cart.forEach(item => {
+
+        const card = document.createElement("div");
+
+        card.className = "cart-item-card";
+
+        card.innerHTML = `
+            <div class="cart-item-image">
+                <img src="${item.image}" alt="${item.name}">
+            </div>
+
+            <div class="cart-item-details">
+
+                <h4>${item.name}</h4>
+
+                <p>${formatPrice(item.price)}</p>
+
+                <div class="quantity-controls">
+
+                    <button class="quantity-btn"
+                        data-action="decrease"
+                        data-id="${item.id}">-</button>
+
+                    <span>${item.quantity}</span>
+
+                    <button class="quantity-btn"
+                        data-action="increase"
+                        data-id="${item.id}">+</button>
+
+                </div>
+
+            </div>
+
+            <div class="cart-item-remove">
+
+                <button class="btn-outline remove-item"
+                    data-id="${item.id}">
+                    Remove
+                </button>
+
+            </div>
+        `;
+
+        cartItemsContainer.appendChild(card);
+
+    });
+
+    document.getElementById("summarySubtotal").textContent =
+        formatPrice(totals.subtotal);
+
+    document.getElementById("summaryDelivery").textContent =
+        formatPrice(totals.delivery);
+
+    document.getElementById("summaryTotal").textContent =
+        formatPrice(totals.total);
+
+    document.querySelectorAll(".quantity-btn").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const id = button.dataset.id;
+
+            const action = button.dataset.action;
+
+            const cart = loadCart();
+
+            const item = cart.find(
+                product => product.id === id
+            );
+
+            if (!item) return;
+
+            if (action === "increase") {
+
+                item.quantity++;
+
+            } else if (
+                action === "decrease" &&
+                item.quantity > 1
+            ) {
+
+                item.quantity--;
+
+            }
+
+            saveCart(cart);
+
+            updateCartCount();
+
+            renderCartItems();
+
+        });
+
+    });
+
+    document.querySelectorAll(".remove-item").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const id = button.dataset.id;
+
+            const updatedCart = loadCart().filter(
+                item => item.id !== id
+            );
+
+            saveCart(updatedCart);
+
+            updateCartCount();
+
+            renderCartItems();
+
+        });
+
+    });
+
+}
+
+function initCartPage() {
+
+    if (!document.getElementById("cartItems"))
+        return;
+
+    renderCartItems();
+
+    const clearCartBtn =
+        document.getElementById("clearCart");
+
+    if (clearCartBtn) {
+
+        clearCartBtn.addEventListener("click", () => {
+
+            saveCart([]);
+
+            updateCartCount();
+
+            renderCartItems();
+
+        });
+
+    }
+
+    const placeOrderBtn =
+        document.getElementById("placeOrderBtn");
+
+    if (placeOrderBtn) {
+
+        placeOrderBtn.addEventListener("click", () => {
+
+            const cart = loadCart();
+
+            if (cart.length === 0) {
+
+                alert("Your cart is empty.");
+
+                return;
+
+            }
+
+            const name = document.getElementById("customerName").value;
+             const email = document.getElementById("customerEmail").value;
+            const address = document.getElementById("customerAddress").value;
+
+          const payment = document.querySelector(
+    'input[name="paymentMethod"]:checked'
+).value;
+
+
+let message = `Hello Whisks & Bloom Bakery 👋\n\n`;
+message += `I would like to place an order.\n\n`;
+
+message += `Name: ${name}\n`;
+message += `Email: ${email}\n`;
+message += `Address: ${address}\n`;
+message += `Payment: ${payment}\n\n`;
+
+message += `Thank you.`;
+
+
+const phoneNumber = "233208247186"; // Replace with your WhatsApp number
+
+const whatsappURL =
+    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+window.open(whatsappURL, "_blank");
+
+                    
+
+        });
+
+    }
+
+}
+
+function initShopPage() {
+
+    const cards = document.querySelectorAll(
+        ".products .card, .hidden-products .card"
+    );
+
+    cards.forEach(card => {
+
+        const button = card.querySelector("button");
+
+        if (!button) return;
+
+        button.addEventListener("click", () => {
+
+            const product = {
+
+                name: card.querySelector("h3").textContent.trim(),
+
+                price: parseFloat(
+                    card.querySelector("p").textContent.replace(/[^0-9.]/g, "")
+                ),
+
+                image: card.querySelector("img").src
+
             };
-            reader.readAsDataURL(file);
+
+            addToCart(product);
+
+            button.textContent = "Added ✓";
+
+            button.disabled = true;
+
+            setTimeout(() => {
+
+                button.textContent = "Add to Cart";
+
+                button.disabled = false;
+
+            }, 1000);
+
+        });
+
+    });
+
+}
+
+// ===============================
+// CUSTOM IMAGE UPLOAD
+// ===============================
+
+const uploadZone = document.getElementById("uploadZone");
+
+if (uploadZone) {
+
+    const orderImageInput = document.getElementById("orderImageInput");
+    const uploadPreview = document.getElementById("uploadPreview");
+    const previewThumb = document.getElementById("previewThumb");
+    const previewName = document.getElementById("previewName");
+    const removeImageBtn = document.getElementById("removeImageBtn");
+
+    function updatePreview(file) {
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+
+            previewThumb.style.backgroundImage =
+                `url(${reader.result})`;
+
+            previewName.textContent = file.name;
+
+            uploadPreview.classList.remove("hidden");
+
+        };
+
+        reader.readAsDataURL(file);
+
+    }
+
+    uploadZone.addEventListener("click", () => {
+        orderImageInput.click();
+    });
+
+    orderImageInput.addEventListener("change", () => {
+
+        if (orderImageInput.files.length > 0) {
+
+            updatePreview(orderImageInput.files[0]);
+
         }
 
-        uploadZone.addEventListener('click', () => orderImageInput.click());
+    });
 
-        uploadZone.addEventListener('dragover', (event) => {
-            event.preventDefault();
-            uploadZone.classList.add('upload-hover');
-        });
+    removeImageBtn.addEventListener("click", () => {
 
-        ['dragleave', 'drop'].forEach((eventName) => {
-            uploadZone.addEventListener(eventName, (event) => {
-                event.preventDefault();
-                uploadZone.classList.remove('upload-hover');
-            });
-        });
+        orderImageInput.value = "";
 
-        uploadZone.addEventListener('drop', (event) => {
-            const file = event.dataTransfer.files[0];
-            if (file) {
-                orderImageInput.files = event.dataTransfer.files;
-                updatePreview(file);
-            }
-        });
+        uploadPreview.classList.add("hidden");
 
-        orderImageInput.addEventListener('change', () => {
-            const file = orderImageInput.files[0];
-            if (file) {
-                updatePreview(file);
-            }
-        });
+        previewThumb.style.backgroundImage = "";
 
-        removeImageBtn.addEventListener('click', () => {
-            orderImageInput.value = '';
-            uploadPreview.classList.add('hidden');
-            previewThumb.style.backgroundImage = '';
-            previewName.textContent = '';
-        });
+        previewName.textContent = "";
+
+    });
+
+}
+
+function sendOrder() {
+    const message = "Hello Whisks & Bloom Bakery, I would like to place a custom order.";
+
+    const phoneNumber = "233208247186"; // Replace with your WhatsApp number
+
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappURL, "_blank");
+}
 
 
 
 
+// ===============================
+// START EVERYTHING
+// ===============================
 
+updateCartCount();
+initShopPage();
+initCartPage();
