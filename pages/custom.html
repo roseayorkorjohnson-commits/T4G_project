@@ -70,48 +70,101 @@
 
             <form>
 
+                 <label>Customer Name</label>
+                  <input type="text" id="customerName" placeholder="Enter your full name" required>
 
-                <label>Choose Product</label>
+              <label>Phone Number</label>
+            <input type="tel" id="phoneNumber" placeholder="e.g. 0241234567" required>
 
-                <select>
-                    <option>Cake</option>
-                    <option>Cupcakes</option>
-                    <option>Cookies</option>
-                    <option>Pastries</option>
-                </select>
+               <label>Choose Product</label>
+              <select id="product" required>
+    <option value="">-- Select Product --</option>
+    <option>Cake</option>
+    <option>Cupcakes</option>
+    <option>Cookies</option>
+    <option>Pastries</option>
+    <option>Doughnuts</option>
+    <option>Brownies</option>
+    <option>Cheesecake</option>
+               </select>
+
+          <label>Choose Flavor</label>
+          <select id="flavor" required>
+           <option value="">-- Select Flavor --</option>
+           <option>Chocolate</option>
+          <option>Vanilla</option>
+          <option>Red Velvet</option>
+          <option>Strawberry</option>
+         <option>Lemon</option>
+          <option>Coffee</option>
+         <option>Caramel</option>
+       </select>
+
+       <label>Shape</label>
+<select id="shape" required>
+    <option value="">-- Select Shape --</option>
+    <option>Round</option>
+    <option>Square</option>
+    <option>Rectangle</option>
+    <option>Heart</option>
+    <option>Hexagon</option>
+    <option>Number Cake</option>
+    <option>Letter Cake</option>
+    <option>Custom Shape</option>
+</select>
+
+      label>Size</label>
+     <select id="size" required>
+      <option value="">-- Select Size --</option>
+      <option>Small</option>
+      <option>Medium</option>
+     <option>Large</option>
+     <option>Extra Large</option>
+    </select>
+
+   <label>Quantity</label>
+   <input type="number" id="quantity" min="1" value="1" required>
+
+    <label>Occasion</label>
+    <select id="occasion" required>
+    <option value="">-- Select Occasion --</option>
+    <option>Birthday</option>
+    <option>Wedding</option>
+    <option>Anniversary</option>
+    <option>Graduation</option>
+    <option>Baby Shower</option>
+    <option>Corporate Event</option>
+    <option>Other</option>
+    </select>
+
+    <label>Theme / Colours (Optional)</label>
+   <input type="text" id="theme" placeholder="e.g. Pink & Gold">
+
+<label>Event Date</label>
+<input type="date" id="eventDate" required>
+
+<label>Pickup or Delivery</label>
+<select id="deliveryMethod" required>
+    <option value="">-- Select Option --</option>
+    <option>Pickup</option>
+    <option>Delivery</option>
+</select>
+
+<label>Delivery Address (Only if Delivery)</label>
+<input type="text" id="deliveryAddress" placeholder="Enter delivery address">
+
+<label>Budget (Optional)</label>
+<input type="text" id="budget" placeholder="e.g. GHS 500">
+
+<label>Special Request</label>
+<textarea id="specialRequest" placeholder="Describe your custom order..."></textarea>
+                      
+                      
 
 
 
-                <label>Choose Flavor</label>
-
-                <select>
-                    <option>Chocolate</option>
-                    <option>Vanilla</option>
-                    <option>Red Velvet</option>
-                    <option>Strawberry</option>
-                </select>
 
 
-
-                <label>Size</label>
-
-                <select>
-                    <option>Small</option>
-                    <option>Medium</option>
-                    <option>Large</option>
-                </select>
-
-
-
-                <label>Event Date</label>
-
-                <input type="date">
-
-
-
-                <label>Special Request</label>
-
-                <textarea placeholder="Tell us how you want your order..."></textarea>
 
                 <label>Upload Reference Image (Optional)</label>
                 <div class="upload-card">

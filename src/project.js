@@ -616,11 +616,71 @@ if (uploadZone) {
 }
 
 function sendOrder() {
-    const message = "Hello Whisks & Bloom Bakery, I would like to place a custom order.";
 
-    const phoneNumber = "233208247186"; // Replace with your WhatsApp number
+    const customerName = document.getElementById("customerName").value;
+    const phoneNumber = document.getElementById("phoneNumber").value;
+    const product = document.getElementById("product").value;
+    const flavor = document.getElementById("flavor").value;
+    const size = document.getElementById("size").value;
+    const shape = document.getElementById("shape").value;
+    const quantity = document.getElementById("quantity").value;
+    const occasion = document.getElementById("occasion").value;
+    const theme = document.getElementById("theme").value;
+    const eventDate = document.getElementById("eventDate").value;
+    const deliveryMethod = document.getElementById("deliveryMethod").value;
+    const deliveryAddress = document.getElementById("deliveryAddress").value;
+    const budget = document.getElementById("budget").value;
+    const specialRequest = document.getElementById("specialRequest").value;
 
-    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    if (
+        !customerName ||
+        !phoneNumber ||
+        !product ||
+        !flavor ||
+        !size ||
+        !shape ||
+        !quantity ||
+        !occasion ||
+        !eventDate ||
+        !deliveryMethod
+    ) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    let message = `🎂 *NEW CUSTOM ORDER* 🎂\n\n`;
+
+    message += `👤 Name: ${customerName}\n`;
+    message += `📞 Phone: ${phoneNumber}\n\n`;
+
+    message += `🧁 Product: ${product}\n`;
+    message += `🍫 Flavor: ${flavor}\n`;
+    message += `📏 Size: ${size}\n`;
+    message += `🔷 Shape: ${shape}\n`;
+    message += `🔢 Quantity: ${quantity}\n`;
+    message += `🎉 Occasion: ${occasion}\n`;
+
+    if (theme)
+        message += `🎨 Theme/Colours: ${theme}\n`;
+
+    message += `📅 Event Date: ${eventDate}\n`;
+    message += `🚚 Order Type: ${deliveryMethod}\n`;
+
+    if (deliveryMethod === "Delivery" && deliveryAddress)
+        message += `📍 Delivery Address: ${deliveryAddress}\n`;
+
+    if (budget)
+        message += `💰 Budget: ${budget}\n`;
+
+    if (specialRequest)
+        message += `📝 Special Request: ${specialRequest}\n`;
+
+    message += `\nThank you!`;
+
+    const bakeryNumber = "233208247186"; // Replace with your WhatsApp number
+
+    const whatsappURL =
+        `https://wa.me/${bakeryNumber}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappURL, "_blank");
 }
