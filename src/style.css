@@ -442,10 +442,40 @@ footer {
 .about{
     flex-direction:column;
     text-align:center;
+    padding: 40px 8%;
+}
+
+.hero-text{
+    text-align:center;
+    margin:0 auto;
+    max-width:100%;
 }
 
 .hero-text h1{
     font-size:40px;
+}
+
+.hero-text p{
+    margin:0 auto 25px;
+    max-width:640px;
+}
+
+.hero .btn,
+.hero .btn-outline{
+    display:block;
+    width:100%;
+    max-width:260px;
+    margin:0 auto 14px;
+}
+
+.hero .btn:last-child,
+.hero .btn-outline:last-child{
+    margin-bottom:0;
+}
+
+.order-btn{
+    padding: 8px 16px;
+    font-size: 14px;
 }
 
 .products{
@@ -2185,3 +2215,6 @@ SIGNUP PAGE
         width: 100%;
     }
 }
+
+
+
