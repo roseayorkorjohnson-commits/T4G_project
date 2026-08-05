@@ -703,6 +703,51 @@ function sendOrder() {
     window.open(whatsappURL, "_blank");
 }
 
+// ===============================
+// LOGIN & SIGNUP
+// ===============================
+
+// Sign Up
+function signUp(event) {
+    event.preventDefault();
+
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const successMessage = document.getElementById("success-message");
+
+    if (password !== confirmPassword) {
+        successMessage.textContent = "❌ Passwords do not match.";
+        successMessage.style.display = "block";
+        return;
+    }
+
+    successMessage.textContent =
+        "🎉 Welcome to Whisks & Bloom! Your account has been created successfully.";
+
+    successMessage.style.display = "block";
+
+    setTimeout(() => {
+        window.location.href = "login.html";
+    }, 2000);
+}
+
+// Login
+function login(event) {
+    event.preventDefault();
+
+    const successMessage = document.getElementById("success-message");
+
+    successMessage.textContent =
+        "👋 Welcome back! Login successful.";
+
+    successMessage.style.display = "block";
+
+    setTimeout(() => {
+        window.location.href = "../index.html";
+    }, 2000);
+}
+
+
 
 
 
@@ -713,3 +758,6 @@ function sendOrder() {
 updateCartCount();
 initShopPage();
 initCartPage();
+
+
+
