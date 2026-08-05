@@ -44,6 +44,15 @@ body{
     color:#333;
     font-weight:bold;
 }
+.nav-links a.active {
+    color: #d63384;
+    border-bottom: 3px solid #d63384;
+    padding-bottom: 5px;
+}
+
+.nav-links a:hover {
+    color: #d63384;
+}
 
 .nav-links a:hover{
     color:#d63384;

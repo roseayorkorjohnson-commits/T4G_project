@@ -11,6 +11,24 @@ if (hamburger && navLinks) {
     });
 }
 
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const currentPage = window.location.pathname.split("/").pop();
+
+    const navLinks = document.querySelectorAll(".nav-links a");
+
+    navLinks.forEach(link => {
+        const linkPage = link.getAttribute("href");
+
+        if (linkPage === currentPage) {
+            link.classList.add("active");
+        }
+    });
+});
+
+
+
 // ===============================
 // SHOP SEARCH & VIEW MORE
 // ===============================
@@ -493,7 +511,7 @@ message += `Payment: ${payment}\n\n`;
 message += `Thank you.`;
 
 
-const phoneNumber = "233208247186"; // Replace with your WhatsApp number
+const phoneNumber = "233208247186";  
 
 const whatsappURL =
     `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
