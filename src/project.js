@@ -728,7 +728,7 @@ function signUp(event) {
 
     // Take user to homepage after 2 seconds
     setTimeout(() => {
-        window.location.href = "index.html";
+        window.location.href = "../index.html";
     }, 2000);
 }
 
