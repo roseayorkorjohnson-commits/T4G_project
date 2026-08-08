@@ -59,49 +59,42 @@
 <!-- Login Section -->
 
 <section class="login-page">
+          <div class="login-box">
 
+    <h1>Welcome Back</h1>
 
-    <div class="login-box">
+    <p>Login to continue your Whisks & Bloom experience.</p>
 
+    <form onsubmit="login(event)">
 
-        <h1>Welcome Back</h1>
-
-        <p>
-            Login to continue your Whisks & Bloom experience.
-        </p>
-
-
-
-        <form>
-
-            <label>Email Address</label>
-
-            <input 
+        <label for="email">Email Address</label>
+        <input 
             type="email" 
-            placeholder="Enter your email">
+            id="email" 
+            placeholder="Enter your email"
+            required
+        >
 
-
-            <label>Password</label>
-
-            <input 
+        <label for="password">Password</label>
+        <input 
             type="password" 
-            placeholder="Enter your password">
+            id="password" 
+            placeholder="Enter your password"
+            required
+        >
 
-            <button type="submit">
-                Login
-            </button>
+        <button type="submit">Login</button>
 
+    </form>
 
-            <p class="signup-text">
-                Don't have an account?
-                <a href="signup.html">Create Account</a>
-            </p>
+    <p id="success-message" class="success-message"></p>
 
-
-        </form>
-
-
-    </div>
+    <p class="signup-text">
+        Don't have an account?
+        <a href="signup.html">Create Account</a>
+    </p>
+        
+</div>
 
 
 </section>

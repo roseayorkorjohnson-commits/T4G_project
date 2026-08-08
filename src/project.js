@@ -703,47 +703,46 @@ function sendOrder() {
     window.open(whatsappURL, "_blank");
 }
 
+
+
+
 // ===============================
 // LOGIN & SIGNUP
 // ===============================
 
-// Sign Up
+// SIGN UP
 function signUp(event) {
     event.preventDefault();
 
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
-    const successMessage = document.getElementById("success-message");
 
+    // Check if passwords match
     if (password !== confirmPassword) {
-        successMessage.textContent = "❌ Passwords do not match.";
-        successMessage.style.display = "block";
+        alert("❌ Passwords do not match. Please try again.");
         return;
     }
 
-    successMessage.textContent =
-        "🎉 Welcome to Whisks & Bloom! Your account has been created successfully.";
+    // Successful signup message
+    alert("🎉 You have successfully signed up! Welcome to Whisks & Bloom.");
 
-    successMessage.style.display = "block";
-
+    // Take user to homepage after 2 seconds
     setTimeout(() => {
-        window.location.href = "login.html";
+        window.location.href = "index.html";
     }, 2000);
 }
 
-// Login
+
+// LOGIN
 function login(event) {
     event.preventDefault();
 
-    const successMessage = document.getElementById("success-message");
+    // Successful login message
+    alert("👋 Welcome back to Whisks & Bloom!");
 
-    successMessage.textContent =
-        "👋 Welcome back! Login successful.";
-
-    successMessage.style.display = "block";
-
+    // Take user to homepage after 2 seconds
     setTimeout(() => {
-        window.location.href = "../index.html";
+        window.location.href = "index.html";
     }, 2000);
 }
 
