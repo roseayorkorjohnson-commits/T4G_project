@@ -475,6 +475,7 @@ footer {
     color: #ddd;
 }
 
+
 /* Responsive */
 @media (max-width: 768px) {
     .footer-content {
@@ -1668,6 +1669,17 @@ CONTACT PAGE
     opacity:0.8;
 
 }
+
+.contact-link {
+  color: black !important;   
+  text-decoration: none;     
+}
+
+.contact-link:hover {
+  color: #ff69b4;            
+}
+
+
 
 
 
