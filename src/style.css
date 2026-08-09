@@ -2334,4 +2334,38 @@ SIGNUP PAGE
 }
 
 
+/* ===============================
+   SOCIAL MEDIA ICONS
+================================ */
 
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.social-icons a {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #ffffff;
+    color: #c2185b;
+
+    border-radius: 50%;
+    text-decoration: none;
+
+    font-size: 17px;
+
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: #c2185b;
+    color: #ffffff;
+
+    transform: translateY(-4px);
+}
