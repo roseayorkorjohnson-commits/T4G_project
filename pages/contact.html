@@ -103,7 +103,7 @@
             <h3>✉ Email</h3>
 
             <p>
-                info@Whisks&Bloom.com
+                whisksbloom@gmail.com
             </p>
 
         </div>
@@ -115,7 +115,7 @@
     <div class="contact-form">
         <h2>Send Us A Message</h2>
 
-        <form>
+           <form onsubmit="sendMessage(event)">
             <input 
             type="text" 
             placeholder="Your Name">
@@ -125,8 +125,7 @@
             <input 
             type="tel" 
             placeholder="Phone Number">
-            <textarea 
-            placeholder="Your Message"></textarea>
+            <textarea id="message" placeholder="Your Message" required></textarea>
 
             <button type="submit">
                 Send Message
@@ -163,7 +162,7 @@
                 <h3>Contact</h3>
                 <p>📍 Accra, Ghana</p>
                 <p>📞 +233 20 123 4567</p>
-                <p>✉ hello@whiskbloom.com</p>
+                <p>✉ whisksbloom@gmail.com</p>
             </div>
 
         </div>

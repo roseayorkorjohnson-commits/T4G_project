@@ -1,6 +1,11 @@
-// ===============================
-// HAMBURGER MENU
-// ===============================
+// =====================================================
+// WHISKS & BLOOM - MAIN JAVASCRIPT
+// =====================================================
+
+
+// =====================================================
+// HAMBURGER MENU & ACTIVE NAVBAR
+// =====================================================
 
 const hamburger = document.getElementById("hamburger");
 const navLinks = document.getElementById("nav-links");
@@ -12,26 +17,31 @@ if (hamburger && navLinks) {
 }
 
 
-
+// Highlight current page
 document.addEventListener("DOMContentLoaded", () => {
-    const currentPage = window.location.pathname.split("/").pop();
 
-    const navLinks = document.querySelectorAll(".nav-links a");
+    const currentPage = window.location.pathname
+        .split("/")
+        .pop();
 
-    navLinks.forEach(link => {
+    const navbarLinks = document.querySelectorAll(".nav-links a");
+
+    navbarLinks.forEach(link => {
+
         const linkPage = link.getAttribute("href");
 
         if (linkPage === currentPage) {
             link.classList.add("active");
         }
+
     });
+
 });
 
 
-
-// ===============================
+// =====================================================
 // SHOP SEARCH & VIEW MORE
-// ===============================
+// =====================================================
 
 const searchInput = document.getElementById("searchInput");
 const categoryBtns = document.querySelectorAll(".category-btn");
@@ -44,22 +54,36 @@ const allCards = [
     ...document.querySelectorAll(".hidden-products .card")
 ];
 
+
 function getCardName(card) {
+
     return (
         card.dataset.name ||
-        card.querySelector("h3").textContent
+        card.querySelector("h3")?.textContent ||
+        ""
     ).toLowerCase();
+
 }
+
 
 function getCardCategory(card) {
-    return (card.dataset.category || "").toLowerCase();
+
+    return (
+        card.dataset.category || ""
+    ).toLowerCase();
+
 }
 
+
 function updateNoResults(show) {
+
     if (noResultsEl) {
-        noResultsEl.style.display = show ? "block" : "none";
+        noResultsEl.style.display =
+            show ? "block" : "none";
     }
+
 }
+
 
 function filterProducts() {
 
@@ -67,13 +91,15 @@ function filterProducts() {
         ? searchInput.value.trim().toLowerCase()
         : "";
 
-    const activeBtn = document.querySelector(".category-btn.active");
+    const activeBtn =
+        document.querySelector(".category-btn.active");
 
     const activeCategory = activeBtn
         ? activeBtn.dataset.category
         : "all";
 
     let hiddenVisible = false;
+
 
     allCards.forEach(card => {
 
@@ -89,53 +115,82 @@ function filterProducts() {
             name.includes(query) ||
             category.includes(query);
 
-        const show = matchesCategory && matchesSearch;
+        const show =
+            matchesCategory && matchesSearch;
 
-        card.classList.toggle("filtered-out", !show);
+
+        card.classList.toggle(
+            "filtered-out",
+            !show
+        );
+
 
         if (
             show &&
             card.closest(".hidden-products")
         ) {
+
             hiddenVisible = true;
+
             card.classList.add("visible");
+
         } else if (
             card.closest(".hidden-products")
         ) {
+
             card.classList.remove("visible");
+
         }
 
     });
 
+
     if (hiddenWrapper) {
+
         hiddenWrapper.classList.toggle(
             "open",
             hiddenVisible
         );
+
     }
 
+
     if (viewMoreBtn && hiddenWrapper) {
+
         viewMoreBtn.textContent =
             hiddenWrapper.classList.contains("open")
                 ? "Show Less"
                 : "View More Products";
+
     }
 
-    const visibleCards = allCards.filter(
-        card => !card.classList.contains("filtered-out")
-    );
 
-    updateNoResults(visibleCards.length === 0);
+    const visibleCards =
+        allCards.filter(
+            card =>
+                !card.classList.contains(
+                    "filtered-out"
+                )
+        );
+
+
+    updateNoResults(
+        visibleCards.length === 0
+    );
 
 }
 
+
+// Category buttons
 categoryBtns.forEach(btn => {
 
     btn.addEventListener("click", () => {
 
-        categoryBtns.forEach(button =>
-            button.classList.remove("active")
-        );
+        categoryBtns.forEach(button => {
+
+            button.classList.remove("active");
+
+        });
 
         btn.classList.add("active");
 
@@ -145,10 +200,19 @@ categoryBtns.forEach(btn => {
 
 });
 
+
+// Search input
 if (searchInput) {
-    searchInput.addEventListener("input", filterProducts);
+
+    searchInput.addEventListener(
+        "input",
+        filterProducts
+    );
+
 }
 
+
+// View More button
 if (viewMoreBtn && hiddenWrapper) {
 
     viewMoreBtn.addEventListener("click", () => {
@@ -164,19 +228,32 @@ if (viewMoreBtn && hiddenWrapper) {
 
 }
 
-const searchBtn = document.querySelector(".shop-controls button");
+
+// Search button
+const searchBtn =
+    document.querySelector(
+        ".shop-controls button"
+    );
 
 if (searchBtn) {
-    searchBtn.addEventListener("click", filterProducts);
+
+    searchBtn.addEventListener(
+        "click",
+        filterProducts
+    );
+
 }
+
 
 filterProducts();
 
-// ===============================
+
+// =====================================================
 // CART STORAGE
-// ===============================
+// =====================================================
 
 const cartStorageKey = "whiskBloomCart";
+
 
 function loadCart() {
 
@@ -186,13 +263,14 @@ function loadCart() {
             localStorage.getItem(cartStorageKey)
         ) || [];
 
-    } catch {
+    } catch (error) {
 
         return [];
 
     }
 
 }
+
 
 function saveCart(cart) {
 
@@ -202,6 +280,7 @@ function saveCart(cart) {
     );
 
 }
+
 
 function getCartItemId(product) {
 
@@ -214,32 +293,41 @@ function getCartItemId(product) {
 
 }
 
+
 function updateCartCount() {
 
     const cart = loadCart();
 
     const count = cart.reduce(
-        (sum, item) => sum + item.quantity,
+        (sum, item) =>
+            sum + item.quantity,
         0
     );
 
-    const cartCount = document.getElementById("cart-count");
+    const cartCount =
+        document.getElementById("cart-count");
 
     if (cartCount) {
+
         cartCount.textContent = count;
+
     }
 
 }
+
 
 function addToCart(product) {
 
     const cart = loadCart();
 
-    const id = getCartItemId(product);
+    const id =
+        getCartItemId(product);
 
-    const existing = cart.find(
-        item => item.id === id
-    );
+    const existing =
+        cart.find(
+            item => item.id === id
+        );
+
 
     if (existing) {
 
@@ -248,14 +336,21 @@ function addToCart(product) {
     } else {
 
         cart.push({
-            id,
+
+            id: id,
+
             name: product.name,
+
             price: product.price,
+
             image: product.image,
+
             quantity: 1
+
         });
 
     }
+
 
     saveCart(cart);
 
@@ -264,62 +359,131 @@ function addToCart(product) {
 }
 
 
-
-
-
-
-// ===============================
+// =====================================================
 // CART FUNCTIONS
-// ===============================
+// =====================================================
 
 function formatPrice(value) {
+
     return `GHS ${value.toFixed(2)}`;
+
 }
+
 
 function calculateTotals(cart) {
-    const subtotal = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-    );
 
-    const delivery = subtotal > 0 ? 15 : 0;
+    const subtotal =
+        cart.reduce(
+            (sum, item) =>
+                sum +
+                item.price *
+                item.quantity,
+            0
+        );
+
+
+    const delivery =
+        subtotal > 0 ? 15 : 0;
+
 
     return {
-        subtotal,
-        delivery,
-        total: subtotal + delivery
+
+        subtotal: subtotal,
+
+        delivery: delivery,
+
+        total:
+            subtotal + delivery
+
     };
+
 }
+
 
 function renderCartItems() {
 
-    const cartItemsContainer = document.getElementById("cartItems");
+    const cartItemsContainer =
+        document.getElementById(
+            "cartItems"
+        );
 
-    if (!cartItemsContainer) return;
+
+    if (!cartItemsContainer) {
+        return;
+    }
+
 
     const emptyMessage =
-        document.querySelector(".empty-cart-message");
+        document.querySelector(
+            ".empty-cart-message"
+        );
+
 
     const clearCartBtn =
-        document.getElementById("clearCart");
+        document.getElementById(
+            "clearCart"
+        );
+
 
     const cart = loadCart();
 
-    const totals = calculateTotals(cart);
+    const totals =
+        calculateTotals(cart);
+
 
     cartItemsContainer.innerHTML = "";
 
+
+    // Empty cart
     if (cart.length === 0) {
 
-        if (emptyMessage)
-            emptyMessage.style.display = "block";
+        if (emptyMessage) {
 
-        if (clearCartBtn)
-            clearCartBtn.disabled = true;
+            emptyMessage.style.display =
+                "block";
 
-        document.getElementById("summarySubtotal").textContent = formatPrice(0);
-        document.getElementById("summaryDelivery").textContent = formatPrice(0);
-        document.getElementById("summaryTotal").textContent = formatPrice(0);
+        }
+
+
+        if (clearCartBtn) {
+
+            clearCartBtn.disabled =
+                true;
+
+        }
+
+
+        const subtotal =
+            document.getElementById(
+                "summarySubtotal"
+            );
+
+        const delivery =
+            document.getElementById(
+                "summaryDelivery"
+            );
+
+        const total =
+            document.getElementById(
+                "summaryTotal"
+            );
+
+
+        if (subtotal) {
+            subtotal.textContent =
+                formatPrice(0);
+        }
+
+        if (delivery) {
+            delivery.textContent =
+                formatPrice(0);
+        }
+
+        if (total) {
+            total.textContent =
+                formatPrice(0);
+        }
+
 
         updateCartCount();
 
@@ -327,329 +491,745 @@ function renderCartItems() {
 
     }
 
-    if (emptyMessage)
-        emptyMessage.style.display = "none";
 
-    if (clearCartBtn)
-        clearCartBtn.disabled = false;
+    if (emptyMessage) {
 
+        emptyMessage.style.display =
+            "none";
+
+    }
+
+
+    if (clearCartBtn) {
+
+        clearCartBtn.disabled =
+            false;
+
+    }
+
+
+    // Display cart items
     cart.forEach(item => {
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
-        card.className = "cart-item-card";
+        card.className =
+            "cart-item-card";
+
 
         card.innerHTML = `
+
             <div class="cart-item-image">
-                <img src="${item.image}" alt="${item.name}">
+
+                <img
+                    src="${item.image}"
+                    alt="${item.name}"
+                >
+
             </div>
+
 
             <div class="cart-item-details">
 
                 <h4>${item.name}</h4>
 
-                <p>${formatPrice(item.price)}</p>
+                <p>
+                    ${formatPrice(item.price)}
+                </p>
+
 
                 <div class="quantity-controls">
 
-                    <button class="quantity-btn"
+                    <button
+                        class="quantity-btn"
                         data-action="decrease"
-                        data-id="${item.id}">-</button>
+                        data-id="${item.id}"
+                    >
+                        -
+                    </button>
 
-                    <span>${item.quantity}</span>
 
-                    <button class="quantity-btn"
+                    <span>
+                        ${item.quantity}
+                    </span>
+
+
+                    <button
+                        class="quantity-btn"
                         data-action="increase"
-                        data-id="${item.id}">+</button>
+                        data-id="${item.id}"
+                    >
+                        +
+                    </button>
 
                 </div>
 
             </div>
 
+
             <div class="cart-item-remove">
 
-                <button class="btn-outline remove-item"
-                    data-id="${item.id}">
+                <button
+                    class="btn-outline remove-item"
+                    data-id="${item.id}"
+                >
                     Remove
                 </button>
 
             </div>
+
         `;
 
-        cartItemsContainer.appendChild(card);
+
+        cartItemsContainer.appendChild(
+            card
+        );
 
     });
 
-    document.getElementById("summarySubtotal").textContent =
-        formatPrice(totals.subtotal);
 
-    document.getElementById("summaryDelivery").textContent =
-        formatPrice(totals.delivery);
+    // Update totals
+    const summarySubtotal =
+        document.getElementById(
+            "summarySubtotal"
+        );
 
-    document.getElementById("summaryTotal").textContent =
-        formatPrice(totals.total);
+    const summaryDelivery =
+        document.getElementById(
+            "summaryDelivery"
+        );
 
-    document.querySelectorAll(".quantity-btn").forEach(button => {
+    const summaryTotal =
+        document.getElementById(
+            "summaryTotal"
+        );
 
-        button.addEventListener("click", () => {
 
-            const id = button.dataset.id;
+    if (summarySubtotal) {
 
-            const action = button.dataset.action;
-
-            const cart = loadCart();
-
-            const item = cart.find(
-                product => product.id === id
+        summarySubtotal.textContent =
+            formatPrice(
+                totals.subtotal
             );
 
-            if (!item) return;
+    }
 
-            if (action === "increase") {
 
-                item.quantity++;
+    if (summaryDelivery) {
 
-            } else if (
-                action === "decrease" &&
-                item.quantity > 1
-            ) {
+        summaryDelivery.textContent =
+            formatPrice(
+                totals.delivery
+            );
 
-                item.quantity--;
+    }
 
-            }
 
-            saveCart(cart);
+    if (summaryTotal) {
 
-            updateCartCount();
+        summaryTotal.textContent =
+            formatPrice(
+                totals.total
+            );
 
-            renderCartItems();
+    }
+
+
+    // Quantity buttons
+    document
+        .querySelectorAll(".quantity-btn")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const id =
+                        button.dataset.id;
+
+                    const action =
+                        button.dataset.action;
+
+                    const cart =
+                        loadCart();
+
+
+                    const item =
+                        cart.find(
+                            product =>
+                                product.id === id
+                        );
+
+
+                    if (!item) {
+                        return;
+                    }
+
+
+                    if (
+                        action === "increase"
+                    ) {
+
+                        item.quantity++;
+
+                    }
+
+
+                    if (
+                        action === "decrease" &&
+                        item.quantity > 1
+                    ) {
+
+                        item.quantity--;
+
+                    }
+
+
+                    saveCart(cart);
+
+                    updateCartCount();
+
+                    renderCartItems();
+
+                }
+            );
 
         });
 
-    });
 
-    document.querySelectorAll(".remove-item").forEach(button => {
+    // Remove buttons
+    document
+        .querySelectorAll(".remove-item")
+        .forEach(button => {
 
-        button.addEventListener("click", () => {
+            button.addEventListener(
+                "click",
+                () => {
 
-            const id = button.dataset.id;
+                    const id =
+                        button.dataset.id;
 
-            const updatedCart = loadCart().filter(
-                item => item.id !== id
+
+                    const updatedCart =
+                        loadCart().filter(
+                            item =>
+                                item.id !== id
+                        );
+
+
+                    saveCart(
+                        updatedCart
+                    );
+
+                    updateCartCount();
+
+                    renderCartItems();
+
+                }
             );
 
-            saveCart(updatedCart);
-
-            updateCartCount();
-
-            renderCartItems();
-
         });
-
-    });
 
 }
+
+
+// =====================================================
+// CART PAGE
+// =====================================================
 
 function initCartPage() {
 
-    if (!document.getElementById("cartItems"))
+    const cartItems =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    if (!cartItems) {
         return;
+    }
+
 
     renderCartItems();
 
+
+    // Clear cart
     const clearCartBtn =
-        document.getElementById("clearCart");
+        document.getElementById(
+            "clearCart"
+        );
+
 
     if (clearCartBtn) {
 
-        clearCartBtn.addEventListener("click", () => {
+        clearCartBtn.addEventListener(
+            "click",
+            () => {
 
-            saveCart([]);
+                saveCart([]);
 
-            updateCartCount();
+                updateCartCount();
 
-            renderCartItems();
+                renderCartItems();
 
-        });
+            }
+        );
 
     }
 
+
+    // Place order
     const placeOrderBtn =
-        document.getElementById("placeOrderBtn");
+        document.getElementById(
+            "placeOrderBtn"
+        );
+
 
     if (placeOrderBtn) {
 
-        placeOrderBtn.addEventListener("click", () => {
+        placeOrderBtn.addEventListener(
+            "click",
+            () => {
 
-            const cart = loadCart();
+                const cart =
+                    loadCart();
 
-            if (cart.length === 0) {
 
-                alert("Your cart is empty.");
+                if (cart.length === 0) {
 
-                return;
+                    alert(
+                        "Your cart is empty."
+                    );
+
+                    return;
+
+                }
+
+
+                const name =
+                    document.getElementById(
+                        "customerName"
+                    )?.value || "";
+
+
+                const email =
+                    document.getElementById(
+                        "customerEmail"
+                    )?.value || "";
+
+
+                const address =
+                    document.getElementById(
+                        "customerAddress"
+                    )?.value || "";
+
+
+                const paymentElement =
+                    document.querySelector(
+                        'input[name="paymentMethod"]:checked'
+                    );
+
+
+                const payment =
+                    paymentElement
+                        ? paymentElement.value
+                        : "Not selected";
+
+
+                let message =
+                    `Hello Whisks & Bloom Bakery 👋\n\n`;
+
+                message +=
+                    `I would like to place an order.\n\n`;
+
+                message +=
+                    `Name: ${name}\n`;
+
+                message +=
+                    `Email: ${email}\n`;
+
+                message +=
+                    `Address: ${address}\n`;
+
+                message +=
+                    `Payment: ${payment}\n\n`;
+
+                message +=
+                    `Thank you.`;
+
+
+                const phoneNumber =
+                    "233208247186";
+
+
+                const whatsappURL =
+                    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+
+                window.open(
+                    whatsappURL,
+                    "_blank"
+                );
 
             }
-
-            const name = document.getElementById("customerName").value;
-             const email = document.getElementById("customerEmail").value;
-            const address = document.getElementById("customerAddress").value;
-
-          const payment = document.querySelector(
-    'input[name="paymentMethod"]:checked'
-).value;
-
-
-let message = `Hello Whisks & Bloom Bakery 👋\n\n`;
-message += `I would like to place an order.\n\n`;
-
-message += `Name: ${name}\n`;
-message += `Email: ${email}\n`;
-message += `Address: ${address}\n`;
-message += `Payment: ${payment}\n\n`;
-
-message += `Thank you.`;
-
-
-const phoneNumber = "233208247186";  
-
-const whatsappURL =
-    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-window.open(whatsappURL, "_blank");
-
-                    
-
-        });
+        );
 
     }
 
 }
 
+
+// =====================================================
+// SHOP PAGE - ADD TO CART
+// =====================================================
+
 function initShopPage() {
 
-    const cards = document.querySelectorAll(
-        ".products .card, .hidden-products .card"
-    );
+    const cards =
+        document.querySelectorAll(
+            ".products .card, .hidden-products .card"
+        );
+
 
     cards.forEach(card => {
 
-        const button = card.querySelector("button");
+        const button =
+            card.querySelector(
+                "button"
+            );
 
-        if (!button) return;
 
-        button.addEventListener("click", () => {
+        if (!button) {
+            return;
+        }
 
-            const product = {
 
-                name: card.querySelector("h3").textContent.trim(),
+        button.addEventListener(
+            "click",
+            () => {
 
-                price: parseFloat(
-                    card.querySelector("p").textContent.replace(/[^0-9.]/g, "")
-                ),
+                const product = {
 
-                image: card.querySelector("img").src
+                    name:
+                        card.querySelector(
+                            "h3"
+                        )?.textContent.trim() ||
+                        "Product",
 
-            };
 
-            addToCart(product);
+                    price:
+                        parseFloat(
+                            card.querySelector(
+                                "p"
+                            )?.textContent
+                                .replace(
+                                    /[^0-9.]/g,
+                                    ""
+                                ) || 0
+                        ),
 
-            button.textContent = "Added ✓";
 
-            button.disabled = true;
+                    image:
+                        card.querySelector(
+                            "img"
+                        )?.src || ""
 
-            setTimeout(() => {
+                };
 
-                button.textContent = "Add to Cart";
 
-                button.disabled = false;
+                addToCart(product);
 
-            }, 1000);
 
-        });
+                button.textContent =
+                    "Added ✓";
+
+                button.disabled =
+                    true;
+
+
+                setTimeout(
+                    () => {
+
+                        button.textContent =
+                            "Add to Cart";
+
+                        button.disabled =
+                            false;
+
+                    },
+                    1000
+                );
+
+            }
+        );
 
     });
 
 }
 
-// ===============================
-// CUSTOM IMAGE UPLOAD
-// ===============================
 
-const uploadZone = document.getElementById("uploadZone");
+// =====================================================
+// CUSTOM IMAGE UPLOAD
+// =====================================================
+
+const uploadZone =
+    document.getElementById(
+        "uploadZone"
+    );
+
 
 if (uploadZone) {
 
-    const orderImageInput = document.getElementById("orderImageInput");
-    const uploadPreview = document.getElementById("uploadPreview");
-    const previewThumb = document.getElementById("previewThumb");
-    const previewName = document.getElementById("previewName");
-    const removeImageBtn = document.getElementById("removeImageBtn");
+    const orderImageInput =
+        document.getElementById(
+            "orderImageInput"
+        );
+
+
+    const uploadPreview =
+        document.getElementById(
+            "uploadPreview"
+        );
+
+
+    const previewThumb =
+        document.getElementById(
+            "previewThumb"
+        );
+
+
+    const previewName =
+        document.getElementById(
+            "previewName"
+        );
+
+
+    const removeImageBtn =
+        document.getElementById(
+            "removeImageBtn"
+        );
+
 
     function updatePreview(file) {
 
-        const reader = new FileReader();
+        if (!file) {
+            return;
+        }
+
+
+        const reader =
+            new FileReader();
+
 
         reader.onload = () => {
 
-            previewThumb.style.backgroundImage =
-                `url(${reader.result})`;
+            if (previewThumb) {
 
-            previewName.textContent = file.name;
+                previewThumb.style.backgroundImage =
+                    `url(${reader.result})`;
 
-            uploadPreview.classList.remove("hidden");
+            }
+
+
+            if (previewName) {
+
+                previewName.textContent =
+                    file.name;
+
+            }
+
+
+            if (uploadPreview) {
+
+                uploadPreview.classList.remove(
+                    "hidden"
+                );
+
+            }
 
         };
+
 
         reader.readAsDataURL(file);
 
     }
 
-    uploadZone.addEventListener("click", () => {
-        orderImageInput.click();
-    });
 
-    orderImageInput.addEventListener("change", () => {
+    uploadZone.addEventListener(
+        "click",
+        () => {
 
-        if (orderImageInput.files.length > 0) {
+            if (orderImageInput) {
 
-            updatePreview(orderImageInput.files[0]);
+                orderImageInput.click();
+
+            }
 
         }
+    );
 
-    });
 
-    removeImageBtn.addEventListener("click", () => {
+    if (orderImageInput) {
 
-        orderImageInput.value = "";
+        orderImageInput.addEventListener(
+            "change",
+            () => {
 
-        uploadPreview.classList.add("hidden");
+                if (
+                    orderImageInput.files.length >
+                    0
+                ) {
 
-        previewThumb.style.backgroundImage = "";
+                    updatePreview(
+                        orderImageInput.files[0]
+                    );
 
-        previewName.textContent = "";
+                }
 
-    });
+            }
+        );
+
+    }
+
+
+    if (removeImageBtn) {
+
+        removeImageBtn.addEventListener(
+            "click",
+            () => {
+
+                if (orderImageInput) {
+
+                    orderImageInput.value =
+                        "";
+
+                }
+
+
+                if (uploadPreview) {
+
+                    uploadPreview.classList.add(
+                        "hidden"
+                    );
+
+                }
+
+
+                if (previewThumb) {
+
+                    previewThumb.style.backgroundImage =
+                        "";
+
+                }
+
+
+                if (previewName) {
+
+                    previewName.textContent =
+                        "";
+
+                }
+
+            }
+        );
+
+    }
 
 }
 
+
+// =====================================================
+// CUSTOM CAKE ORDER
+// =====================================================
+
 function sendOrder() {
 
-    const customerName = document.getElementById("customerName").value;
-    const phoneNumber = document.getElementById("phoneNumber").value;
-    const product = document.getElementById("product").value;
-    const flavor = document.getElementById("flavor").value;
-    const size = document.getElementById("size").value;
-    const shape = document.getElementById("shape").value;
-    const quantity = document.getElementById("quantity").value;
-    const occasion = document.getElementById("occasion").value;
-    const theme = document.getElementById("theme").value;
-    const eventDate = document.getElementById("eventDate").value;
-    const deliveryMethod = document.getElementById("deliveryMethod").value;
-    const deliveryAddress = document.getElementById("deliveryAddress").value;
-    const budget = document.getElementById("budget").value;
-    const specialRequest = document.getElementById("specialRequest").value;
+    const customerName =
+        document.getElementById(
+            "customerName"
+        )?.value || "";
 
+
+    const phoneNumber =
+        document.getElementById(
+            "phoneNumber"
+        )?.value || "";
+
+
+    const product =
+        document.getElementById(
+            "product"
+        )?.value || "";
+
+
+    const flavor =
+        document.getElementById(
+            "flavor"
+        )?.value || "";
+
+
+    const size =
+        document.getElementById(
+            "size"
+        )?.value || "";
+
+
+    const shape =
+        document.getElementById(
+            "shape"
+        )?.value || "";
+
+
+    const quantity =
+        document.getElementById(
+            "quantity"
+        )?.value || "";
+
+
+    const occasion =
+        document.getElementById(
+            "occasion"
+        )?.value || "";
+
+
+    const theme =
+        document.getElementById(
+            "theme"
+        )?.value || "";
+
+
+    const eventDate =
+        document.getElementById(
+            "eventDate"
+        )?.value || "";
+
+
+    const deliveryMethod =
+        document.getElementById(
+            "deliveryMethod"
+        )?.value || "";
+
+
+    const deliveryAddress =
+        document.getElementById(
+            "deliveryAddress"
+        )?.value || "";
+
+
+    const budget =
+        document.getElementById(
+            "budget"
+        )?.value || "";
+
+
+    const specialRequest =
+        document.getElementById(
+            "specialRequest"
+        )?.value || "";
+
+
+    // Required fields
     if (
         !customerName ||
         !phoneNumber ||
@@ -662,101 +1242,218 @@ function sendOrder() {
         !eventDate ||
         !deliveryMethod
     ) {
-        alert("Please fill in all required fields.");
+
+        alert(
+            "Please fill in all required fields."
+        );
+
         return;
+
     }
 
-    let message = `🎂 *NEW CUSTOM ORDER* 🎂\n\n`;
 
-    message += `👤 Name: ${customerName}\n`;
-    message += `📞 Phone: ${phoneNumber}\n\n`;
+    let message =
+        `🎂 *NEW CUSTOM ORDER* 🎂\n\n`;
 
-    message += `🧁 Product: ${product}\n`;
-    message += `🍫 Flavor: ${flavor}\n`;
-    message += `📏 Size: ${size}\n`;
-    message += `🔷 Shape: ${shape}\n`;
-    message += `🔢 Quantity: ${quantity}\n`;
-    message += `🎉 Occasion: ${occasion}\n`;
 
-    if (theme)
-        message += `🎨 Theme/Colours: ${theme}\n`;
+    message +=
+        `👤 Name: ${customerName}\n`;
 
-    message += `📅 Event Date: ${eventDate}\n`;
-    message += `🚚 Order Type: ${deliveryMethod}\n`;
+    message +=
+        `📞 Phone: ${phoneNumber}\n\n`;
 
-    if (deliveryMethod === "Delivery" && deliveryAddress)
-        message += `📍 Delivery Address: ${deliveryAddress}\n`;
+    message +=
+        `🧁 Product: ${product}\n`;
 
-    if (budget)
-        message += `💰 Budget: ${budget}\n`;
+    message +=
+        `🍫 Flavor: ${flavor}\n`;
 
-    if (specialRequest)
-        message += `📝 Special Request: ${specialRequest}\n`;
+    message +=
+        `📏 Size: ${size}\n`;
 
-    message += `\nThank you!`;
+    message +=
+        `🔷 Shape: ${shape}\n`;
 
-    const bakeryNumber = "233208247186"; // Replace with your WhatsApp number
+    message +=
+        `🔢 Quantity: ${quantity}\n`;
+
+    message +=
+        `🎉 Occasion: ${occasion}\n`;
+
+
+    if (theme) {
+
+        message +=
+            `🎨 Theme/Colours: ${theme}\n`;
+
+    }
+
+
+    message +=
+        `📅 Event Date: ${eventDate}\n`;
+
+    message +=
+        `🚚 Order Type: ${deliveryMethod}\n`;
+
+
+    if (
+        deliveryMethod === "Delivery" &&
+        deliveryAddress
+    ) {
+
+        message +=
+            `📍 Delivery Address: ${deliveryAddress}\n`;
+
+    }
+
+
+    if (budget) {
+
+        message +=
+            `💰 Budget: ${budget}\n`;
+
+    }
+
+
+    if (specialRequest) {
+
+        message +=
+            `📝 Special Request: ${specialRequest}\n`;
+
+    }
+
+
+    message +=
+        `\nThank you!`;
+
+
+    const bakeryNumber =
+        "233208247186";
+
 
     const whatsappURL =
         `https://wa.me/${bakeryNumber}?text=${encodeURIComponent(message)}`;
 
-    window.open(whatsappURL, "_blank");
+
+    window.open(
+        whatsappURL,
+        "_blank"
+    );
+
 }
 
 
-
-
-// ===============================
+// =====================================================
 // LOGIN & SIGNUP
-// ===============================
+// =====================================================
 
 // SIGN UP
 function signUp(event) {
+
     event.preventDefault();
 
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
 
-    // Check if passwords match
-    if (password !== confirmPassword) {
-        alert("❌ Passwords do not match. Please try again.");
+    const password =
+        document.getElementById(
+            "password"
+        )?.value || "";
+
+
+    const confirmPassword =
+        document.getElementById(
+            "confirmPassword"
+        )?.value || "";
+
+
+    // Check passwords
+    if (
+        password !==
+        confirmPassword
+    ) {
+
+        alert(
+            "❌ Passwords do not match. Please try again."
+        );
+
         return;
+
     }
 
-    // Successful signup message
-    alert("🎉 You have successfully signed up! Welcome to Whisks & Bloom.");
 
-    // Take user to homepage after 2 seconds
-    setTimeout(() => {
-        window.location.href = "../index.html";
-    }, 2000);
+    // Success message
+    alert(
+        "🎉 You have successfully signed up! Welcome to Whisks & Bloom."
+    );
+
+
+    // Go to homepage after 2 seconds
+    setTimeout(
+        () => {
+
+            window.location.href =
+                "../index.html";
+
+        },
+        2000
+    );
+
 }
 
 
 // LOGIN
 function login(event) {
+
     event.preventDefault();
 
-    // Successful login message
-    alert("👋 Welcome back to Whisks & Bloom!");
 
-    // Take user to homepage after 2 seconds
-    setTimeout(() => {
-        window.location.href = "index.html";
-    }, 2000);
+    // Success message
+    alert(
+        "👋 Welcome back to Whisks & Bloom!"
+    );
+
+
+    // Go to homepage after 2 seconds
+    setTimeout(
+        () => {
+
+            window.location.href =
+                "../index.html";
+
+        },
+        2000
+    );
+
 }
 
 
+// =====================================================
+// CONTACT FORM
+// =====================================================
+
+function sendMessage(event) {
+
+    event.preventDefault();
 
 
+    alert(
+        "💌 Message Sent Successfully!\n\n" +
+        "Thank you for reaching out to Whisks & Bloom. " +
+        "We’ve received your message and will get back to you soon. 🌸🧁"
+    );
 
-// ===============================
+
+    // Clear the form
+    event.target.reset();
+
+}
+
+
+// =====================================================
 // START EVERYTHING
-// ===============================
+// =====================================================
 
 updateCartCount();
+
 initShopPage();
+
 initCartPage();
-
-
-
