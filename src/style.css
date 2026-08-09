@@ -503,17 +503,24 @@ footer {
     justify-content:center;
 }
 
-.hero,
+.hero{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
 .about{
-    flex-direction:column;
-    text-align:center;
+    flex-direction: column;
+    text-align: center;
     padding: 40px 8%;
 }
 
 .hero-text{
-    text-align:center;
-    margin:0 auto;
-    max-width:100%;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 100%;
 }
 
 .hero-text h1{
