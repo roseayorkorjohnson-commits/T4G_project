@@ -561,25 +561,51 @@ footer {
 
 /* Shop Banner */
 .shop-banner {
-    background-image: url('../images/veryshop.jpeg'); /* path to your image */
-    background-size: cover;       /* makes image fill the section */
-    background-position: center;  /* centers the image */
-    background-repeat: no-repeat; /* stops tiling */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    padding: 120px 20px;
-    
-
+    min-height: 320px;
+    padding: 120px 24px;
+    background-image:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0.12) 100%),
+        url('../images/veryshop.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
 }
 
-.shop-banner h1{
-    color: #dc2077;
+.shop-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+    pointer-events: none;
+}
+
+.shop-banner h1 {
+    position: relative;
+    z-index: 1;
+    color: #E83E8C;
     font-size: 3rem;
-    margin-bottom: 15px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    margin-bottom: 12px;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
 }
 
-.shop-banner p{
-    color: #faf4fa;
+.shop-banner p {
+    position: relative;
+    z-index: 1;
+    color: #f8f8f8;
     font-size: 1.1rem;
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 /* Shop Section */
@@ -821,7 +847,7 @@ footer {
 /* About Banner */
 .about-banner {
     position: relative;
-    background-image: url(../images/am.jpeg);
+    background-image: url(../images/sap.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -854,7 +880,7 @@ footer {
 }
 
 .about-banner p {
-    color: #fff;
+    color: #181717;
     font-size: 1.1rem;
 }
 /* About Section */
